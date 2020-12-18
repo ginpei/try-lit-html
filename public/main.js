@@ -49,6 +49,13 @@ function Homepage(props) {
     })
   };
 
+  const onClearClick = () => {
+    main({
+      ...props,
+      items: items.filter((v) => !v.done),
+    })
+  };
+
   /**
    * @param {Todo} item
    */
@@ -76,6 +83,7 @@ function Homepage(props) {
       </h1>
       <p>
         <button @click=${onAddClick}>Add...</button>
+        <button @click=${onClearClick}>Clear</button>
       </p>
       <ul>
         ${items.map((item) => TodoItem({ item, onChange: onItemClick }))}
