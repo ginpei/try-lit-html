@@ -16,9 +16,9 @@ import { html, render } from 'https://unpkg.com/lit-html?module';
 
 main({
   items: [
-    { id: "1", name: "Apple", done: false },
-    { id: "2", name: "Banana", done: true },
-    { id: "3", name: "Candy", done: false },
+    createTodo({ title: "Apple", done: true }),
+    createTodo({ title: "Banana" }),
+    createTodo({ title: "Candy" }),
   ],
 });
 
@@ -35,6 +35,19 @@ function main(props) {
  */
 function Homepage(props) {
   const { items } = props;
+
+  const onAddClick = () => {
+    const title = window.prompt("Title");
+    if (!title) {
+      return;
+    }
+
+    const item = createTodo({ title });
+    main({
+      ...props,
+      items: [...items, item],
+    })
+  };
 
   /**
    * @param {Todo} item
@@ -61,6 +74,9 @@ function Homepage(props) {
         ${items.length}
         )
       </h1>
+      <p>
+        <button @click=${onAddClick}>Add...</button>
+      </p>
       <ul>
         ${items.map((item) => TodoItem({ item, onChange: onItemClick }))}
       </ul>
@@ -84,8 +100,21 @@ function TodoItem({ item, onChange }) {
           @change=${onCheckboxClick}
           type="checkbox"
         />
-        ${item.name}
+        ${item.title}
       </label>
     </li>
   `;
+}
+
+/**
+ * @param {Partial<Todo>} initial
+ * @returns {Todo}
+ */
+function createTodo(initial) {
+  return {
+    done: false,
+    id: Math.random().toFixed(34).slice(2),
+    title: "",
+    ...initial,
+  }
 }
