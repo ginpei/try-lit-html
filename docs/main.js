@@ -1,4 +1,4 @@
-import { html, render } from 'https://unpkg.com/lit-html?module';
+import { html, render } from './LitHtml.js';
 
 /**
  * @typedef {{
