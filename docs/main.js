@@ -2,39 +2,47 @@ import { html, render } from './LitHtml.js';
 
 /**
  * @typedef {{
+ *   items: Todo[];
+ * }} State
+ */
+
+/**
+ * @typedef {{
  *   done: boolean;
  *   id: string;
  *   title: string;
  * }} Todo
  */
 
-/**
- * @typedef {{
- *   items: Todo[];
- * }} HomePageProps
- */
+// ----------------------------------------------------------------
 
-main({
+/** @type {State} */
+const state = {
   items: [
     createTodo({ title: "Apple", done: true }),
     createTodo({ title: "Banana" }),
     createTodo({ title: "Candy" }),
   ],
-});
+};
 
-/**
- * @param {HomePageProps} props
- */
-function main(props) {
-  const Main = () => Homepage(props);
-  render(Main(), document.body);
+main();
+
+// ----------------------------------------------------------------
+
+function main() {
+  setState({});
 }
 
 /**
- * @param {HomePageProps} props
+ * @param {Partial<State>} updates
  */
-function Homepage(props) {
-  const { items } = props;
+function setState(updates) {
+  Object.assign(state, updates);
+  render(Homepage(), document.body);
+}
+
+function Homepage() {
+  const { items } = state;
 
   const onAddClick = () => {
     const title = window.prompt("Title");
@@ -43,33 +51,23 @@ function Homepage(props) {
     }
 
     const item = createTodo({ title });
-    main({
-      ...props,
-      items: [...items, item],
-    })
+    setState({ items: [...items, item] });
   };
 
   const onClearClick = () => {
-    main({
-      ...props,
-      items: items.filter((v) => !v.done),
-    })
+    setState({ items: items.filter((v) => !v.done) });
   };
 
   /**
    * @param {Todo} item
    */
   const onItemClick = (item) => {
-    /** @type {HomePageProps} */
-    const updated = {
-      ...props,
-      items: props.items.map((v) =>
-        v.id === item.id
-          ? { ...item, done: !item.done }
-          : v
-      ),
-    };
-    main(updated);
+    const items = state.items.map((v) =>
+      v.id === item.id
+        ? { ...item, done: !item.done }
+        : v
+    );
+    setState({ items });
   };
 
   return html`
