@@ -102,7 +102,7 @@ function TodoItem({ item, onChange }) {
     <li data-id=${item.id} ?data-done=${item.done}>
       <label>
         <input
-          ?checked=${item.done}
+          .checked=${item.done}
           @change=${onCheckboxClick}
           type="checkbox"
         />
