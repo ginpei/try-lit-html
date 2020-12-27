@@ -1,5 +1,5 @@
 // @ts-ignore
-import * as original from 'https://unpkg.com/lit-html?module';
+import * as original from "https://unpkg.com/lit-html@1.3.0/lit-html.js?module";
 
 /** @type {import("lit-html")["html"]} */
 export const html = original.html;
